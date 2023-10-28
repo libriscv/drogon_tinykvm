@@ -1,0 +1,200 @@
+{
+	"compute": {
+		"concurrency": 4,
+		"max_boot_time": 8.0,
+		"max_request_time": 6.0,
+		"max_memory": 64,
+		"max_request_memory": 48,
+		"req_mem_limit_after_reset": 16, /* Mbytes */
+		"current_working_directory": "$HOME/github/kvm_demo/deno"
+	},
+	"test.com": {
+		"default": true,
+		"start": false,
+		"filename": "$PWD/program/hello_world",
+		"cold_start_file": "$PWD/program/hello_world.mem",
+		"max_memory": 8,
+		"address_space": 8,
+		"verbose_pagetables": false,
+		//"storage_filename": "$PWD/program/hello_world_storage",
+		//"storage": true,
+		"profiling": false
+	},
+	"avif": {
+		"group": "compute",
+		"uri": "https://filebin.varnish-software.com/4wbvu68xy1epbuzv/avifencode.tar.xz",
+		"max_memory": 128,
+		"max_request_memory": 64,
+		"req_mem_limit_after_reset": 24,
+		"ephemeral": false
+	},
+	"counter": {
+		"group": "compute",
+		"filename": "computer_counter",
+		"uri": "https://filebin.varnish-software.com/4wbvu68xy1epbuzv/scounter.tar.xz",
+		"max_request_time": 4.0,
+		"concurrency": 4,
+		"shared_memory": 2,
+		"ephemeral": false
+	},
+	"deno": {
+		"start": true,
+		"profiling": false,
+		"filename": "$HOME/.deno/bin/deno",
+		"cold_start_file": "$PWD/program/deno/deno.mem",
+		"verbose_pagetables": false,
+		"max_memory": 2400,
+		"max_request_memory": 128,
+		"max_request_time": 2.0,
+		"req_mem_limit_after_reset": 64,
+		"storage": true,
+		"storage_1_to_1": true,
+		"storage_arguments": ["run", "--allow-all", "storage.ts"],
+		"storage_dylink_address_hint": "0x2000200000",
+		"executable_remapping": {
+			"caged_heap": ["0x1000000000", 64],
+			"storage_caged_heap": ["0x3000000000", 64, "storage"]
+		},
+		"remapping": {
+			"dont_know": ["0xC00000000", 64],
+			"storage_dont_know": ["0x2C00000000", 64, "storage"]
+		},
+		"main_arguments": ["run", "--allow-all", "main.ts"],
+		"environment": [
+			"DENO_V8_FLAGS=--predictable,--single-threaded,--single-threaded-gc,--max-old-space-size=64,--max-semi-space-size=64",
+			"DENO_DIR=$HOME/.cache/deno",
+			"DENO_NO_UPDATE_CHECK=1"
+		],
+		"current_working_directory": "$PWD/program/deno",
+		"allowed_paths": [
+			"/dev/urandom",
+			"/etc/resolv.conf",
+			"/lib/x86_64-linux-gnu/libgcc_s.so.1",
+			"/lib/x86_64-linux-gnu/libc.so.6",
+			"/lib/x86_64-linux-gnu/libm.so.6",
+			"/lib/x86_64-linux-gnu/libdl.so.2",
+			"/lib/x86_64-linux-gnu/librt.so.1",
+			"/lib/x86_64-linux-gnu/libpthread.so.0",
+			"/lib/x86_64-linux-gnu/libz.so.1",
+			"/lib/x86_64-linux-gnu/libnss_systemd.so.2",
+			"/lib/x86_64-linux-gnu/libcap.so.2",
+			"/lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2",
+			"/lib/x86_64-linux-gnu/libstdc++.so.6",
+			{
+				"real": "$PWD/program",
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno",
+				"writable": true,
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache",
+				"prefix": true
+			}
+		],
+		"warmup": {
+			"num_requests": 0
+		}
+	},
+	"node": {
+		"start": false,
+		"filename": "/usr/bin/node",
+		"max_memory": 2200,
+		"max_request_memory": 512,
+		"heap_address_hint": 120,
+		"main_arguments": [
+			"$PWD/program/node/main.js"
+		],
+		"current_working_directory": "$PWD/program/node",
+		"allowed_paths": [
+			"/dev/urandom",
+			"/etc/resolv.conf",
+			"/etc/ssl/openssl.cnf",
+			"/lib/x86_64-linux-gnu/libgcc_s.so.1",
+			"/lib/x86_64-linux-gnu/libc.so.6",
+			"/lib/x86_64-linux-gnu/libm.so.6",
+			"/lib/x86_64-linux-gnu/libdl.so.2",
+			"/lib/x86_64-linux-gnu/librt.so.1",
+			"/lib/x86_64-linux-gnu/libpthread.so.0",
+			"/lib/x86_64-linux-gnu/libz.so.1",
+			"/lib/x86_64-linux-gnu/libnss_systemd.so.2",
+			"/lib/x86_64-linux-gnu/libcap.so.2",
+			"/lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2",
+			"/lib/x86_64-linux-gnu/libstdc++.so.6",
+			"$PWD/program/libdrogon.so",
+			{
+				"virtual": "/proc/self/maps",
+				"real": "$PWD/maps.fake"
+			}, {
+				"real": "$PWD/program/node",
+				"prefix": true
+			}
+		],
+		"warmup": {
+			"num_requests": 100
+		}
+	},
+	"bun": {
+		"start": false,
+		"filename": "$HOME/.bun/bin/bun",
+		"concurrency": 1,
+		"address_space": 70000,
+		"max_memory": 3000,
+		"max_request_memory": 128,
+		"dylink_address_hint": 120,
+		"heap_address_hint": 160,
+		"executable_remapping": {
+			"dont_know": ["0x2000000000", 32]
+		},
+		"main_arguments": [
+			"$PWD/program/bun/index.ts"
+		],
+		"current_working_directory": "$PWD/program/bun",
+		"allowed_paths": [
+			"/dev/urandom",
+			"/etc/localtime",
+			"/etc/resolv.conf",
+			"/etc/ssl/openssl.cnf",
+			"/lib/x86_64-linux-gnu/libgcc_s.so.1",
+			"/lib/x86_64-linux-gnu/libc.so.6",
+			"/lib/x86_64-linux-gnu/libm.so.6",
+			"/lib/x86_64-linux-gnu/libdl.so.2",
+			"/lib/x86_64-linux-gnu/librt.so.1",
+			"/lib/x86_64-linux-gnu/libpthread.so.0",
+			"/lib/x86_64-linux-gnu/libz.so.1",
+			"/lib/x86_64-linux-gnu/libnss_systemd.so.2",
+			"/lib/x86_64-linux-gnu/libcap.so.2",
+			"/lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2",
+			"/lib/x86_64-linux-gnu/libstdc++.so.6",
+			"$PWD/program/libdrogon.so",
+			"/",
+			"/home/",
+			"/home/gonzo/",
+			"/home/gonzo/github/",
+			"/home/gonzo/github/drogon_kvm/",
+			{
+				"virtual": "/proc/self/maps",
+				"real": "$PWD/maps.fake"
+			}, {
+				"real": "$PWD/program/bun",
+				"prefix": true
+			}
+		],
+		"warmup": {
+			"num_requests": 100
+		}
+	},
+	"go": {
+		"start": false,
+		"uri": "https://filebin.varnish-software.com/4wbvu68xy1epbuzv/goexample.tar.xz",
+		"address_space": 1800,
+		"remapping": ["0xC000000000", 256],
+		"concurrency": 4,
+		"storage": true
+	},
+	"tokio": {
+		"start": false,
+		"filename": "$HOME/github/kvm_demo/rust/tokio/target/release/tokio-demo",
+		"concurrency": 2
+	}
+}

@@ -1,0 +1,7 @@
+**/.build/
+.vscode/
+drogon*.log
+program/hello_world
+program/hello_world_storage
+*.mem
+*.so
