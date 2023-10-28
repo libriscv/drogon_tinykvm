@@ -1,0 +1,79 @@
+{
+	"compute": {
+		"concurrency": 4,
+		"max_boot_time": 8.0,
+		"max_request_time": 6.0,
+		"max_memory": 64,
+		"max_request_memory": 48,
+		"req_mem_limit_after_reset": 16 /* Mbytes */
+	},
+	"test.com": {
+        "filename": "zpizza",
+        "max_memory": 64,
+        "max_request_memory": 128,
+        "max_request_time": 4.0,
+		"req_mem_limit_after_reset": 16,
+		"ephemeral": true,
+		"hugepage_arena_size": 8,
+		"request_hugepage_arena_size": 0,
+		"server": {
+			"port": 8081
+		}
+	},
+	"avif": {
+		"group": "compute",
+		"filename": "compute_avif",
+		"uri": "https://filebin.varnish-software.com/tinykvm_programs/avifencode.tar.xz",
+		"concurrency": 4,
+		"max_memory": 64,
+		"max_request_memory": 64,
+		"req_mem_limit_after_reset": 24,
+		"ephemeral": false,
+		"hugepages": false,
+		"request_hugepages": false
+	},
+	"counter": {
+		"group": "compute",
+		"filename": "computer_counter",
+		"uri": "https://filebin.varnish-software.com/tinykvm_programs/scounter.tar.xz",
+		"max_request_time": 4.0,
+		"concurrency": 4,
+		"shared_memory": 2,
+		"ephemeral": false
+	},
+	"deno": {
+		"group": "compute",
+		"filename": "compute_deno",
+		"uri": "file:///home/gonzo/github/deno_varnish/target/x86_64-unknown-linux-gnu/release/deno-varnish",
+		"concurrency": 4,
+		"address_space": 4500,
+		"max_memory": 2800,
+		"max_request_memory": 128,
+		"req_mem_limit_after_reset": 128,
+		"ephemeral_keep_working_memory": true,
+		"executable_heap": true,
+		"main_arguments": ["/home/gonzo/github/deno_varnish/renderer.js"],
+		"allowed_paths": [
+			"/dev/urandom",
+			"/home/gonzo/github/deno_varnish/renderer.js"
+		],
+		"environment": [
+			"RUST_BACKTRACE=1"
+		],
+		"remapping": {
+			"caged_heap": ["0x1000000000", 256],
+			"dont_know": ["0xC00000000", 64]
+		},
+		"hugepage_arena_size": 64,
+		"request_hugepage_arena_size": 8
+	},
+	"go": {
+		"uri": "https://filebin.varnish-software.com/tinykvm_programs/goexample.tar.xz",
+		"max_memory": 1800,
+		"remapping": ["0xC000000000", 256],
+		"relocate_fixed_mmap": false,
+		//"split_hugepages": false,
+		"concurrency": 4,
+		"storage": true
+	}
+}
