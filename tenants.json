@@ -1,0 +1,186 @@
+{
+	"compute": {
+		"concurrency": 4,
+		"max_boot_time": 8.0,
+		"max_request_time": 6.0,
+		"max_memory": 64,
+		"max_request_memory": 48,
+		"req_mem_limit_after_reset": 16, /* Mbytes */
+		"current_working_directory": "$HOME/github/kvm_demo/deno"
+	},
+	"test.com": {
+        "filename": "zpizza",
+        "max_memory": 64,
+        "max_request_memory": 128,
+        "max_request_time": 4.0,
+		"req_mem_limit_after_reset": 16,
+		"ephemeral": true,
+		"hugepage_arena_size": 8,
+		"request_hugepage_arena_size": 0,
+		"server": {
+			"port": 8081
+		}
+	},
+	"avif": {
+		"group": "compute",
+		"filename": "compute_avif",
+		"uri": "https://filebin.varnish-software.com/tinykvm_programs/avifencode.tar.xz",
+		"concurrency": 4,
+		"max_memory": 64,
+		"max_request_memory": 64,
+		"req_mem_limit_after_reset": 24,
+		"ephemeral": false,
+		"hugepages": false,
+		"request_hugepages": false
+	},
+	"counter": {
+		"group": "compute",
+		"filename": "computer_counter",
+		"uri": "https://filebin.varnish-software.com/tinykvm_programs/scounter.tar.xz",
+		"max_request_time": 4.0,
+		"concurrency": 4,
+		"shared_memory": 2,
+		"ephemeral": false
+	},
+	"deno": {
+		"start": true,
+		"filename": "$HOME/.deno/bin/deno",
+		"concurrency": 32,
+		"max_memory": 2400,
+		"max_request_memory": 128,
+		"req_mem_limit_after_reset": 64,
+		"executable_remapping": {
+			"caged_heap": ["0x1000000000", 64]
+		},
+		"remapping": {
+			"dont_know": ["0xC00000000", 64]
+		},
+		"main_arguments": ["run", "--allow-all", "main.ts"],
+		"environment": [
+			"DENO_V8_FLAGS=--predictable,--max-old-space-size=64,--max-semi-space-size=64",
+			"DENO_DIR=$HOME/.cache/deno",
+			"DENO_NO_UPDATE_CHECK=1"
+		],
+		"current_working_directory": "$PWD/program/deno",
+		"allowed_paths": [
+			"/dev/urandom",
+			"/etc/resolv.conf",
+			"/lib/x86_64-linux-gnu/libgcc_s.so.1",
+			"/lib/x86_64-linux-gnu/libc.so.6",
+			"/lib/x86_64-linux-gnu/libm.so.6",
+			"/lib/x86_64-linux-gnu/libdl.so.2",
+			"/lib/x86_64-linux-gnu/librt.so.1",
+			"/lib/x86_64-linux-gnu/libpthread.so.0",
+			"/lib/x86_64-linux-gnu/libz.so.1",
+			"/lib/x86_64-linux-gnu/libnss_systemd.so.2",
+			"/lib/x86_64-linux-gnu/libcap.so.2",
+			"/lib/x86_64-linux-gnu/libnss_mdns4_minimal.so.2",
+			{
+				"real": "$PWD/program",
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno",
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno/dep_analysis_cache_v2",
+				"writable": true,
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno/v8_code_cache_v2",
+				"writable": true,
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno/node_analysis_cache_v2",
+				"writable": true,
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno/remote",
+				"writable": true,
+				"prefix": true
+			}, {
+				"real": "$HOME/.cache/deno/npm",
+				"writable": true,
+				"prefix": true
+			}
+		],
+		"warmup": {
+			"num_requests": 100
+		}
+	},
+	"node": {
+		"start": false,
+		"filename": "/usr/bin/node",
+		"concurrency": 1,
+		"max_memory": 2200,
+		"max_request_memory": 512,
+		"heap_address_hint": 120,
+		"main_arguments": [
+			"$PWD/program/node/main.js"
+		],
+		"current_working_directory": "$PWD/program/node",
+		"allowed_paths": [
+			"/dev/urandom",
+			"/etc/resolv.conf",
+			"/etc/ssl/openssl.cnf",
+			"$$PWD",
+			{
+				"virtual": "/proc/self/maps",
+				"real": "$PWD/maps.fake"
+			}
+		],
+		"warmup": {
+			"num_requests": 250
+		}
+	},
+	"bun": {
+		"start": false,
+		"filename": "$HOME/.bun/bin/bun",
+		"concurrency": 1,
+		"address_space": 70000,
+		"max_memory": 3000,
+		"max_request_memory": 128,
+		"request_hugepage_arena_size": 4,
+		"dylink_address_hint": 120,
+		"heap_address_hint": 160,
+		"executable_heap": true,
+		"executable_remapping": {
+			"dont_know": ["0x2000000000", 32]
+		},
+		"main_arguments": [
+			"$PWD/program/bun/index.ts"
+		],
+		"current_working_directory": "$PWD/program/bun",
+		"allowed_paths": [
+			"/dev/urandom",
+			"/etc/localtime",
+			"/etc/resolv.conf",
+			"/etc/ssl/openssl.cnf",
+			"/",
+			"/home/",
+			"$HOME",
+			"$HOME/github/",
+			"$$PWD",
+			{
+				"virtual": "/proc/self/maps",
+				"real": "$PWD/maps.fake"
+			}
+		],
+		"warmup": {
+			"num_requests": 0
+		}
+	},
+	"go": {
+		"uri": "https://filebin.varnish-software.com/tinykvm_programs/goexample.tar.xz",
+		"max_memory": 2000,
+		"remapping": ["0xC000000000", 256],
+		"relocate_fixed_mmap": false,
+		"concurrency": 4,
+		"storage": true
+	},
+	"tokio": {
+		"start": false,
+		"filename": "$HOME/github/kvm_demo/rust/tokio/target/release/tokio-demo",
+		"executable_heap": true,
+		"concurrency": 2
+	}
+}
