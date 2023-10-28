@@ -1,0 +1,9 @@
+[submodule "drogon"]
+	path = drogon
+	url = git@github.com:drogonframework/drogon.git
+[submodule "tinykvm"]
+	path = src/sandbox/ext/tinykvm
+	url = git@github.com:fwsGonzo/tinykvm.git
+[submodule "ext/json"]
+	path = src/sandbox/ext/json
+	url = https://github.com/nlohmann/json.git
