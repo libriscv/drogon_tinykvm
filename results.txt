@@ -1,0 +1,125 @@
+-- DROGON HELLO WORLD --
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c32 -t32 http://127.0.0.1:8080/drogon
+Running 10s test @ http://127.0.0.1:8080/drogon
+  32 threads and 32 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    16.90us   33.15us   7.29ms   99.39%
+    Req/Sec    60.95k    17.51k  108.57k    56.44%
+  19602947 requests in 10.10s, 2.76GB read
+Requests/sec: 1940957.71
+Transfer/sec:    279.51MB
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c16 -t16 http://127.0.0.1:8080/drogon
+Running 10s test @ http://127.0.0.1:8080/drogon
+  16 threads and 16 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    10.18us    3.18us 515.00us   76.44%
+    Req/Sec    93.98k    19.51k  126.91k    68.25%
+  15110696 requests in 10.10s, 2.13GB read
+Requests/sec: 1496126.59
+Transfer/sec:    215.45MB
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c8 -t8 http://127.0.0.1:8080/drogon
+Running 10s test @ http://127.0.0.1:8080/drogon
+  8 threads and 8 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     8.44us    2.96us 508.00us   83.88%
+    Req/Sec   113.11k    25.85k  143.78k    71.29%
+  9093682 requests in 10.10s, 1.28GB read
+Requests/sec: 900384.88
+Transfer/sec:    129.66MB
+
+-- TINYKVM MULTI-TENANT HELLO WORLD --
+
+$ ./wrk -c32 -t32 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  32 threads and 32 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    18.90us   56.21us   5.14ms   99.45%
+    Req/Sec    57.70k     7.80k   89.64k    74.78%
+  18550339 requests in 10.10s, 2.35GB read
+Requests/sec: 1836687.78
+Transfer/sec:    238.22MB
+
+$ ./wrk -c16 -t16 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  16 threads and 16 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    11.65us   25.02us   6.01ms   99.95%
+    Req/Sec    84.51k     6.68k  103.77k    83.66%
+  13592105 requests in 10.10s, 1.91GB read
+Requests/sec: 1345788.15
+Transfer/sec:    193.80MB
+
+$ ./wrk -c8 -t8 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  8 threads and 8 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     9.43us    6.38us   1.17ms   97.01%
+    Req/Sec   102.25k    15.92k  119.24k    85.52%
+  8220606 requests in 10.10s, 1.16GB read
+Requests/sec: 813978.61
+Transfer/sec:    117.22MB
+
+-- RESET EVERY 10 REQUESTS --
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c32 -t32 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  32 threads and 32 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    35.28us   65.79us  13.10ms   95.39%
+    Req/Sec    35.74k     8.08k   65.95k    67.23%
+  11491762 requests in 10.10s, 1.62GB read
+Requests/sec: 1137888.80
+Transfer/sec:    163.86MB
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c16 -t16 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  16 threads and 16 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    22.16us   17.42us   1.19ms   83.81%
+    Req/Sec    50.14k    11.93k   73.41k    56.50%
+  8061755 requests in 10.10s, 1.13GB read
+Requests/sec: 798204.94
+Transfer/sec:    114.95MB
+
+-- RESET EVERY 1 REQUESTS --
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c32 -t32 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  32 threads and 32 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   113.31us   59.39us   2.71ms   87.70%
+    Req/Sec     9.13k     3.47k   17.92k    57.74%
+  2934513 requests in 10.10s, 422.58MB read
+Requests/sec: 290567.13
+Transfer/sec:     41.84MB
+
+gonzo@gonzo-ryzen:~/github/wrk$ ./wrk -c16 -t16 http://127.0.0.1:8080/
+Running 10s test @ http://127.0.0.1:8080/
+  16 threads and 16 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    71.24us   35.52us   1.20ms   91.08%
+    Req/Sec    14.62k     4.44k   20.49k    73.64%
+  2351282 requests in 10.10s, 338.60MB read
+Requests/sec: 232800.36
+Transfer/sec:     33.52MB
+
+-- SCOUNTER stateful example --
+
+$ ./wrk -c32 -t32 http://127.0.0.1:8080/ -H "Host: counter"
+Running 10s test @ http://127.0.0.1:8080/
+  32 threads and 32 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    18.62us   15.44us   3.21ms   95.10%
+    Req/Sec    54.52k    14.68k   97.19k    74.16%
+  17530839 requests in 10.10s, 2.45GB read
+Requests/sec: 1735767.02
+Transfer/sec:    248.30MB
+
+$ curl http://127.0.0.1:8080/ -H "Host: counter"
+Hello 33436184 World!
+
+$ curl http://127.0.0.1:8080/ -H "Host: counter"
+Hello 33436185 World!
